@@ -27,8 +27,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Enable Passenger and Nginx and remove the default site
 # Preserve env variables for nginx
-# RUN rm -f /etc/service/nginx/down && \
- #   rm /etc/nginx/sites-enabled/default
+RUN rm -f /etc/service/nginx/down && \
+    rm /etc/nginx/sites-enabled/default
 # COPY vendor/docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 # COPY vendor/docker/00_app_env.conf /etc/nginx/conf.d/00_app_env.conf
 
@@ -52,7 +52,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 WORKDIR /home/app/webapp
 
 # Copy webapp folder
-# COPY . /home/app/webapp/
+COPY . /home/app/webapp/
+
 # RUN mkdir -p tmp/pids && \
  #   mkdir -p tmp/storage && \
   #  chown -R app:app /home/app/webapp && \
@@ -72,4 +73,4 @@ RUN mkdir -p /etc/my_init.d
 # COPY vendor/docker/90_migrate.sh /etc/my_init.d/90_migrate.sh
 
 # Expose web
-# EXPOSE 80
+EXPOSE 80
