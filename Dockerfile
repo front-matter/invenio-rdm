@@ -52,12 +52,10 @@ RUN rm -f /etc/service/nginx/down && \
 WORKDIR /home/app/webapp
 
 # Copy webapp folder
-COPY . /home/app/webapp/
+COPY passenger-wsgi.py /home/app/webapp/
 
-# RUN mkdir -p tmp/pids && \
- #   mkdir -p tmp/storage && \
-  #  chown -R app:app /home/app/webapp && \
-  #  chmod -R 755 /home/app/webapp
+RUN chown -R app:app /home/app/webapp && \
+    chmod -R 755 /home/app/webapp
 
 # enable SSH
 RUN rm -f /etc/service/sshd/down && \
