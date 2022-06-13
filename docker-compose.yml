@@ -6,3 +6,48 @@ services:
     environment:
       - ELASTIC_PASSWORD=changeme
     image: ghcr.io/front-matter/invenio-rdm:v.0.1.3
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    ports:
+      - "9201:9200"
+      - "9301:9300"
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: changeme
+      xpack.security.enabled: "false"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "*"
+    volumes:
+      - data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: curl -f http://elastic:changeme@elasticsearch:9200
+      interval: 10s
+      timeout: 1s
+  db:
+    image: postgres:14.1
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+  mq:
+    image: rabbitmq:3.8-management
+    restart: "unless-stopped"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+  cache:
+    image: redis:7.0
+    restart: "unless-stopped"
+    read_only: true
+    ports:
+      - "6379:6379"
+volumes:
+  db:
+    driver: local
+  data:
+    driver: local
