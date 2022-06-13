@@ -14,12 +14,10 @@ CMD ["/sbin/my_init"]
 
 # Update installed APT packages
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
-    apt-get install ntp curl wget nano tmux tzdata software-properties-common imagemagick shared-mime-info -y
-# Install Python 3.10 and Node 16
-RUN add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get install python3.10 python-is-python3 -y && \
-    apt-get autoremove --purge && \
-    curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh && \
+    apt-get install ntp curl wget nano tmux tzdata software-properties-common python3.9 python-is-python3 imagemagick shared-mime-info -y && \
+    apt-get autoremove --purge
+# Install Node 16
+RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt-get install nodejs -y && \
     node -v

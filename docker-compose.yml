@@ -5,4 +5,4 @@ services:
     env_file: .env
     environment:
       - ELASTIC_PASSWORD=changeme
-    image: ghcr.io/front-matter/invenio-rdm:v.0.1.2
+    image: ghcr.io/front-matter/invenio-rdm:v.0.1.3
