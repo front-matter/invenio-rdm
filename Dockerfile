@@ -42,7 +42,7 @@ COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 
 # Copy webapp folder
 WORKDIR /home/app
-COPY passenger-wsgi.py /home/app/webapp/
+COPY . /home/app/webapp/
 
 # WORKDIR /home/app/webapp
 
