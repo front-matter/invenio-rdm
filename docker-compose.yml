@@ -5,7 +5,7 @@ services:
     env_file: .env
     environment:
       - ELASTIC_PASSWORD=changeme
-    image: ghcr.io/front-matter/invenio-rdm:v.0.1.4
+    image: ghcr.io/front-matter/invenio-rdm:v.0.1.6
     ports:
       - "8065:80"
       - "2265:22"

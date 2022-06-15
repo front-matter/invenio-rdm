@@ -40,19 +40,11 @@ RUN rm -f /etc/service/nginx/down && \
 # RUN mkdir /etc/service/shoryuken
 # COPY vendor/docker/shoryuken.sh /etc/service/shoryuken/run
 
-# Install Passenger monitor for Datadog
-# RUN wget https://github.com/Sjeanpierre/passenger-datadog-monitor/releases/download/v1.00/passenger-datadog-monitor && \
-#     mv passenger-datadog-monitor /usr/local/bin && \
-#     chmod +x /usr/local/bin/passenger-datadog-monitor && \
-#     mkdir /etc/service/passenger-datadog
-# COPY vendor/docker/passenger-datadog.sh /etc/service/passenger-datadog/run
-# RUN chmod +x /etc/service/passenger-datadog/run
-
-
-WORKDIR /home/app/webapp
-
 # Copy webapp folder
+WORKDIR /home/app
 COPY passenger-wsgi.py /home/app/webapp/
+
+# WORKDIR /home/app/webapp
 
 RUN chown -R app:app /home/app/webapp && \
     chmod -R 755 /home/app/webapp
@@ -65,7 +57,7 @@ RUN rm -f /etc/service/sshd/down && \
 RUN mkdir -p /etc/my_init.d
 
 # install custom ssh key during startup
-# COPY vendor/docker/10_ssh.sh /etc/my_init.d/10_ssh.sh
+COPY docker/10_ssh.sh /etc/my_init.d/10_ssh.sh
 
 # COPY vendor/docker/80_flush_cache.sh /etc/my_init.d/80_flush_cache.sh
 # COPY vendor/docker/90_migrate.sh /etc/my_init.d/90_migrate.sh
