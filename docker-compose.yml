@@ -5,10 +5,9 @@ services:
     env_file: .env
     environment:
       - ELASTIC_PASSWORD=changeme
-    image: ghcr.io/front-matter/invenio-rdm:v.0.1.9
+    image: ghcr.io/front-matter/invenio-rdm:v.0.1.10
     ports:
-      - "8065:80"
-      - "2265:22"
+      - "5000:80"
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     ports:
