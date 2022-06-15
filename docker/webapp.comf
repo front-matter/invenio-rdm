@@ -1,0 +1,13 @@
+server {
+    listen 80 default_server;
+    server_name _;
+    root /home/app/webapp/public;
+
+    passenger_enabled on;
+    passenger_user app;
+    passenger_python /usr/bin/python3.9;
+    merge_slashes off;
+    client_max_body_size 10M;
+
+    error_log stderr;
+}

@@ -29,7 +29,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Preserve env variables for nginx
 RUN rm -f /etc/service/nginx/down && \
     rm /etc/nginx/sites-enabled/default
-# COPY vendor/docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 # COPY vendor/docker/00_app_env.conf /etc/nginx/conf.d/00_app_env.conf
 
 # Use Amazon NTP servers
