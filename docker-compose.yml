@@ -20,8 +20,8 @@ services:
       xpack.security.enabled: "false"
       http.cors.enabled: "true"
       http.cors.allow-origin: "*"
-    volumes:
-      - data:/usr/share/elasticsearch/data
+   # volumes:
+    #  - data:/usr/share/elasticsearch/data
     healthcheck:
       test: curl -f http://elastic:changeme@elasticsearch:9200
       interval: 10s
