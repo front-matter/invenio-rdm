@@ -14,18 +14,13 @@ CMD ["/sbin/my_init"]
 
 # Update installed APT packages
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
-    apt-get install ntp curl wget nano tmux tzdata software-properties-common python3.9 python3-pip python3.9-venv python-is-python3 imagemagick shared-mime-info -y && \
+    apt-get install ntp curl wget nano tmux tzdata software-properties-common python3.9 python3-pip pipenv python-is-python3 imagemagick shared-mime-info -y && \
     apt-get autoremove --purge
 # Install Node 16
-RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh && \
+RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt-get install nodejs -y && \
     node -v
-
-# Create a Python virtual environmemt
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3.9 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # clean up apt sources
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -48,7 +43,8 @@ COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 # Copy webapp folder
 WORKDIR /home/app
 COPY . /home/app/webapp/
-RUN python3 -m pip install -r /home/app/webapp/requirements.txt
+
+RUN pipenv install --deploy --system --pre
 
 # WORKDIR /home/app/webapp
 

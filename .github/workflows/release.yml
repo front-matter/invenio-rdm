@@ -28,10 +28,10 @@ jobs:
           echo "::set-output name=GIT_TAG::$(git tag --points-at HEAD)"
         id: set_git_vars
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile
+          fplatforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ steps.set_git_vars.outputs.GIT_TAG }}
           cache-from: type=local,src=/tmp/.buildx-cache
