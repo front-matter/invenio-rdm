@@ -1,10 +1,13 @@
-FROM phusion/passenger-full:2.3.0
+FROM --platform=$BUILDPLATFORM phusion/baseimage:focal-1.2.0
 LABEL maintainer="martin@front-matter.io"
 
 # Set correct environment variables.
 ENV HOME /home/app
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
+
+# add app user
+RUN useradd -ms /bin/bash app
 
 # Allow app user to read /etc/container_environment
 RUN usermod -a -G docker_env app
@@ -14,9 +17,10 @@ CMD ["/sbin/my_init"]
 
 # Update installed APT packages
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
-    apt-get install ntp curl wget nano tmux tzdata software-properties-common python3.9 python3-pip pipenv python-is-python3 imagemagick shared-mime-info -y && \
+    apt-get install ntp curl wget nano tmux tzdata software-properties-common python3.9 python3-pip python3-dev pipenv python-is-python3 imagemagick shared-mime-info -y && \
     apt-get autoremove --purge
-# Install Node 16
+
+# Install Node 14
 RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt-get install nodejs -y && \
@@ -27,8 +31,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Enable Passenger and Nginx and remove the default site
 # Preserve env variables for nginx
-RUN rm -f /etc/service/nginx/down && \
-    rm /etc/nginx/sites-enabled/default
+RUN rm -f /etc/service/nginx/down
 COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 # COPY vendor/docker/00_app_env.conf /etc/nginx/conf.d/00_app_env.conf
 
@@ -63,6 +66,9 @@ RUN mkdir -p /etc/my_init.d
 
 # COPY vendor/docker/80_flush_cache.sh /etc/my_init.d/80_flush_cache.sh
 # COPY vendor/docker/90_migrate.sh /etc/my_init.d/90_migrate.sh
+
+# run as app user
+USER app
 
 # Expose web
 EXPOSE 80
