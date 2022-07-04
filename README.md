@@ -13,6 +13,11 @@ docker compose up
 
 Run this command from the root folder of the git repository and make sure [Docker](https://docs.docker.com/) is installed and running. Docker Compose uses the configuration in docker-compose.yml. The file contains sensible defaults for a development environment. If you want to customize the configuration, add a file (docker-compose.override.yml](https://docs.docker.com/compose/extends/) (make sure the file is not under git version control).
 
+## Documentation
+
+To learn how to configure, customize, deploy and much more, visit
+the [InvenioRDM Documentation](https://inveniordm.docs.cern.ch/).
+
 ## License
 
 **Invenio-RDM** is released under the [MIT License](https://github.com/front-matter/invenio-rdm/blob/main/LICENSE).

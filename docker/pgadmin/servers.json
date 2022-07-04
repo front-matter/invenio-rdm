@@ -1,0 +1,14 @@
+{
+    "Servers": {
+      "1": {
+        "Name": "rdm_db",
+        "Group": "Servers",
+        "Host": "rdm_db_1",
+        "Port": 5432,
+        "MaintenanceDB": "postgres",
+        "Username": "rdm",
+        "SSLMode": "prefer"
+      }
+    }
+  }
+  
