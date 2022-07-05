@@ -57,7 +57,7 @@ RUN pipenv lock && \
 
 # WORKDIR /home/app/webapp
 
-RUN chown app:app  /etc/container_environment && \
+RUN chown -R app:app  /etc/container_environment && \
     chown -R app:app /home/app && \
     chmod -R 755 /home/app
 
