@@ -10,7 +10,7 @@ ENV LANG en_US.UTF-8
 RUN useradd -ms /bin/bash app
 
 # Allow app user to read /etc/container_environment
-RUN usermod -a -G docker_env app
+# RUN usermod -a -G docker_env app
 
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]

@@ -5,7 +5,7 @@ services:
     env_file: .env
     environment:
       - ELASTIC_PASSWORD=changeme
-    image: ghcr.io/front-matter/invenio-rdm:v.0.1.28
+    image: ghcr.io/front-matter/invenio-rdm:v.0.1.29
     ports:
       - "9000:80"
   elasticsearch:
@@ -27,7 +27,7 @@ services:
       interval: 10s
       timeout: 1s
   db:
-    image: postgres:14.1
+    image: postgres:14.4
     restart: always
     environment:
       - "POSTGRES_USER=rdm"
