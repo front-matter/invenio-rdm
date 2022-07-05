@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM phusion/baseimage:focal-1.2.0
+FROM --platform=$BUILDPLATFORM phusion/baseimage:jammy-1.0.0
 LABEL maintainer="martin@front-matter.io"
 
 # Set correct environment variables.
@@ -17,8 +17,13 @@ CMD ["/sbin/my_init"]
 
 # Update installed APT packages
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
-    apt-get install ntp curl wget nano tmux tzdata software-properties-common python3.9 python3-pip python3-dev pipenv python-is-python3 imagemagick shared-mime-info -y && \
+    apt-get install ntp curl wget nano tmux tzdata software-properties-common python-is-python3 imagemagick shared-mime-info -y && \
     apt-get autoremove --purge
+
+# Install Python 3.9 (default in Ubuntu 22.04 is 3.10)
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get install python3.9 python3.9-distutils python3.9-dev pip -y && \
+    python3.9 -m pip install pipenv
 
 # Install Node 14
 RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
@@ -29,7 +34,7 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
 # clean up apt sources
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Enable Passenger and Nginx and remove the default site
+# Enable uWSGI and Nginx and remove the default site
 # Preserve env variables for nginx
 RUN rm -f /etc/service/nginx/down
 COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
@@ -45,14 +50,15 @@ COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 
 # Copy webapp folder
 WORKDIR /home/app
-COPY . /home/app/webapp/
+COPY . /home/app/
 
-RUN pipenv install --deploy --system --pre
+RUN pipenv lock && \
+    pipenv install --deploy --pre
 
 # WORKDIR /home/app/webapp
 
-RUN chown -R app:app /home/app/webapp && \
-    chmod -R 755 /home/app/webapp
+RUN chown -R app:app /home/app && \
+    chmod -R 755 /home/app
 
 # enable SSH
 RUN rm -f /etc/service/sshd/down && \
