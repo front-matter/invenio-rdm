@@ -52,7 +52,8 @@ COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 WORKDIR /home/app
 COPY . /home/app/
 
-RUN pipenv install --deploy --pre
+RUN pipenv lock && \
+    pipenv install --deploy --pre
 
 # WORKDIR /home/app/webapp
 
