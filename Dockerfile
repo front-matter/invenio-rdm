@@ -10,7 +10,7 @@ ENV LANG en_US.UTF-8
 RUN useradd -ms /bin/bash app
 
 # Allow app user to read /etc/container_environment
-# RUN usermod -a -G docker_env app
+RUN usermod -a -G docker_env app
 
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]
@@ -52,12 +52,12 @@ COPY docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 WORKDIR /home/app
 COPY . /home/app/
 
-RUN pipenv lock && \
-    pipenv install --deploy --pre
+RUN pipenv install --deploy --pre
 
 # WORKDIR /home/app/webapp
 
-RUN chown -R app:app /home/app && \
+RUN chown app:app  /etc/container_environment && \
+    chown -R app:app /home/app && \
     chmod -R 755 /home/app
 
 # enable SSH
